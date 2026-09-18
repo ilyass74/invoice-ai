@@ -4,6 +4,11 @@ A local invoice extraction and review prototype built with Python, PaddleOCR and
 Upload a PNG or JPEG, inspect extracted fields and line items, correct mistakes, check
 arithmetic, and save an approval record with the original extraction and edit history.
 
+**Stack:** Python, PaddleOCR/PaddlePaddle, Streamlit, Pandas and Pillow.
+
+**Navigation:** [Features](#features) · [Setup](#run-on-windows) · [CLI](#cli) ·
+[Tests](#tests-and-evidence) · [Limitations](#limitations) · [Files](#project-files).
+
 ## Features
 
 - CPU OCR with PaddleOCR; MKL-DNN disabled for the tested Windows setup.
@@ -30,6 +35,8 @@ The author used Python 3.13.3 and Streamlit 1.64.0 on Windows. Dependencies in
 A fresh installation from these ranges has not been verified here.
 
 ```powershell
+git clone https://github.com/ilyass74/invoice-ai.git
+cd invoice-ai
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m streamlit run .\app.py --server.address 127.0.0.1
@@ -92,6 +99,20 @@ when this version was packaged. No broad accuracy percentage is claimed.
 - An arithmetic PASS does not prove OCR accuracy or document authenticity.
 - Drafts can contain default zero discounts; these are not evidence of OCR extraction.
 
+## Output lifecycle
+
+| Location | Contents |
+| --- | --- |
+| `outputs/` | OCR text/boxes, extracted JSON and pipeline reports |
+| Browser review session | Editable candidate fields and line items |
+| Downloaded draft | Review data exported before approval |
+| `approved/<approval_id>/` | Completed approval JSON and saved source image |
+
+CLI completion means the scripts finished; inspect the individual validation
+reports for failed checks. In the UI, corrections must pass review and validation
+before a completed approval is saved. Draft edits remain session-local unless
+exported or approved.
+
 ## Project files
 
 | Files | Purpose |
@@ -107,6 +128,12 @@ when this version was packaged. No broad accuracy percentage is claimed.
 
 Generated invoices, uploaded images, outputs, approval records, environment files and
 model caches should stay local. The supplied `.gitignore` excludes project data folders.
+
+## Implementation references
+
+[Pipeline](run_pipeline.py) · [Review UI](app.py) ·
+[Header validation](verify_invoice.py) · [Line-item validation](verify_items.py) ·
+[Regression tests](test_regression.py).
 
 ## References
 
