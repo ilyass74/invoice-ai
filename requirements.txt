@@ -1,0 +1,7 @@
+# Dependency ranges; not an exact lock of the author's Windows environment.
+# OCR model availability can depend on the installed PaddleOCR version.
+paddleocr>=3,<4
+paddlepaddle>=3,<4
+streamlit>=1.64,<2
+pandas>=2,<4
+Pillow>=10,<13
